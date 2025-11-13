@@ -2,18 +2,16 @@ import { createUser, getUserBy } from "../services/user.service.js"
 import { loginSchema, registerSchema } from "../validations/schema.user.js"
 import createHttpError from "http-errors"
 import bcrypt from "bcryptjs";
+import dotenv from "dotenv"
+import jwt from "jsonwebtoken";
+import { getLesson } from "../services/lesson.service.js";
 
 export const register = async (req, res, next) => {
     // รับข้อมูล
-    const { firstname, lastname, password, confirmPassword, email, phone, contactInfo, bio, profile } = req.body
+    const { firstName, lastName, password, confirmPassword, email, phone, contactInfo, bio, profile } = req.body
 
     // ตรวจสอบเงื่อนไข 
     const user = registerSchema.parse(req.body)
-    // console.log(user)
-
-    // if (confirmPassword !== password) {
-    //     return next(createHttpError[400]('password ไม่ตรงกัน'))
-    // }
 
     const newUser = { ...user, password: await bcrypt.hash(password, 10) }
     // console.log(newUser)
@@ -29,6 +27,7 @@ export const login = async (req, res, next) => {
     const { email, password } = req.body
     const user = loginSchema.parse(req.body)
     const foundUser = await getUserBy("email", email)
+
     // find user
     if (!foundUser) {
         return next(createHttpError[401]("Invalid Login"))
@@ -37,16 +36,23 @@ export const login = async (req, res, next) => {
     if (!pwOk) {
         return next(createHttpError[401]("Invalid Login"))
     }
+
     // mockdata
     const { ...userData } = foundUser
+
+    // jwt
+    const payload = { id: foundUser.id }
+    console.log('payload', payload)
+    const token = jwt.sign(payload, process.env.JWT_SECRECT, {
+        algorithm: "HS256",
+        expiresIn: "15d"
+    })
+    console.log(token)
     // showdata
     res.json({
         message: "Register Successful",
-        // token: token,
+        // แสดงข้อมูล
         user: userData,
+        token: token,
     })
-}
-
-export const getMe = (req, res) => {
-    res.json({ user: req.user })
 }

@@ -6,8 +6,8 @@ async function main() {
     // 👤 USERS
     const user1 = await prisma.user.create({
         data: {
-            firstname: "Garfiw",
-            lastname: "Sriyut",
+            firstName: "Garfiw",
+            lastName: "Sriyut",
             email: "garfiw@example.com",
             phone: "0801234567",
             password: "hashed_password_123", // สมมติว่าเข้ารหัสแล้ว
@@ -20,8 +20,8 @@ async function main() {
 
     const user2 = await prisma.user.create({
         data: {
-            firstname: "Beam",
-            lastname: "Tawan",
+            firstName: "Beam",
+            lastName: "Tawan",
             email: "beam@example.com",
             phone: "0817654321",
             password: "hashed_password_456",

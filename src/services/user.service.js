@@ -10,3 +10,4 @@ export const createUser = async (userData) => {
 export const getUserBy = async (column, value) => {
     return await prisma.user.findUnique({ where: { [column]: value } })
 }
+

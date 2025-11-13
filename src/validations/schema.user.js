@@ -6,12 +6,12 @@ const mobileRegex = /^[0-9]{10,15}$/
 
 export const registerSchema = z.object({
     // ระบุเงื่อไขข้อมูล
-    firstname: z
+    firstName: z
         .string()
         .min(1, "กรุณากรอกชื่อ")
         .max(50, "ชื่อยาวเกินไป"),
 
-    lastname: z
+    lastName: z
         .string()
         .min(1, "กรุณากรอกนามสกุล")
         .max(50, "นามสกุลยาวเกินไป"),
